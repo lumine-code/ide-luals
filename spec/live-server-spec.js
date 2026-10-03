@@ -67,10 +67,16 @@ liveSuite("ide-lua real LuaLS protocol", () => {
   it("preserves the project's Lua version ahead of an editor fallback", async () => {
     lumine.config.set("ide-lua.runtimeVersion", "Lua 5.1");
     await start();
+    // LuaLS's custom command expects the same canonical URI it emits in its
+    // own actions. Standard document requests accept native drive spellings.
+    const declaration = await client.request("textDocument/definition", {
+      textDocument: { uri: fixture.uris.main },
+      position: require("./helpers/project").position(fixture.texts.main, "greet(", 2),
+    });
     expect(
       await client.request("workspace/executeCommand", {
         command: "lua.getConfig",
-        arguments: [{ uri: fixture.uris.main, key: "Lua.runtime.version" }],
+        arguments: [{ uri: declaration[0].targetUri, key: "Lua.runtime.version" }],
       }),
     ).toBe("Lua 5.4");
   });
