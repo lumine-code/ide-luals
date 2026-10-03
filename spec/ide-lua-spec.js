@@ -41,6 +41,9 @@ describe("ide-lua adapter and installation", () => {
   it("exposes native settings sections and preserves unset runtime defaults", () => {
     expect(adapter.getSettings().Lua.runtime).toBeUndefined();
     expect(adapter.getWorkspaceConfiguration("Lua.hint")).toEqual({ enable: true });
+    expect(adapter.getWorkspaceConfiguration("files.associations")).toEqual({
+      "*.rockspec": "lua",
+    });
     expect(adapter.getWorkspaceConfiguration("Other")).toBeUndefined();
     lumine.config.set("ide-lua.runtimeVersion", "LuaJIT");
     lumine.config.set("ide-lua.globals", ["application"]);

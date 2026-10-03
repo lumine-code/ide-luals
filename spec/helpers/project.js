@@ -12,6 +12,8 @@ exports.createProject = () => {
       'local M = {}\n\n---Build a greeting.\n---@param name string\n---@return string\nfunction M.greet(name)\n    return "Hello " .. name\nend\n\n---@param left number\n---@param right number\n---@return number\nfunction M.add(left, right)\n    return left + right\nend\n\nreturn M\n',
     main: 'local greeter = require("greeter")\nlocal message = "😀"; print(greeter.greet("Ada"))\nlocal total = greeter.add(4, 5)\nprint(message, total)\n',
     broken: "local result = imaginaryGlobal\nprint(result)\n",
+    rockspec:
+      'local   function greeting(name)\nreturn   "Hello "..name\nend\nlocal text="😀";print(greeting("Ada"))\nlocal result=unknownRockspecGlobal\nprint(text,result)\n',
     completion: 'local greeter = require("greeter")\ngreeter.gr\n',
     format: "local values={one=1,two=2}\nprint(values.one)\n",
     onType: "if   true   then\n\nend\n",
@@ -35,7 +37,10 @@ exports.createProject = () => {
     }),
   );
   const files = Object.fromEntries(
-    Object.keys(texts).map((key) => [key, path.join(rootPath, `${key}.lua`)]),
+    Object.keys(texts).map((key) => [
+      key,
+      path.join(rootPath, `${key}.${key === "rockspec" ? "rockspec" : "lua"}`),
+    ]),
   );
   for (const [key, file] of Object.entries(files)) fs.writeFileSync(file, texts[key]);
   return {

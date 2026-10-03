@@ -80,6 +80,48 @@ liveSuite("ide-lua real LuaLS protocol", () => {
       }),
     ).toBe("Lua 5.4");
   });
+  it("analyzes LuaRocks files with diagnostics, formatting and Unicode symbol edits", async () => {
+    await start();
+    const position = require("./helpers/project").position;
+    const params = {
+      textDocument: { uri: fixture.uris.rockspec },
+      position: position(fixture.texts.rockspec, 'greeting("Ada"', 2),
+    };
+    expect(JSON.stringify(await client.request("textDocument/hover", params))).toContain(
+      "greeting",
+    );
+    const edits = await client.request("textDocument/rename", { ...params, newName: "welcome" });
+    const changes = Object.entries(edits.changes).find(([uri]) =>
+      exercise.sameUri(uri, fixture.uris.rockspec),
+    )[1];
+    expect(changes.length).toBe(2);
+    expect(
+      changes.some(
+        ({ range }) =>
+          range.start.line === params.position.line &&
+          range.start.character === position(fixture.texts.rockspec, 'greeting("Ada"').character,
+      ),
+    ).toBe(true);
+    expect(
+      (
+        await client.request("textDocument/formatting", {
+          textDocument: params.textDocument,
+          options: { tabSize: 4, insertSpaces: true },
+        })
+      ).length,
+    ).toBeGreaterThan(0);
+    await client.waitFor(
+      () =>
+        client
+          .messages("textDocument/publishDiagnostics")
+          .some(
+            ({ params }) =>
+              exercise.sameUri(params.uri, fixture.uris.rockspec) &&
+              params.diagnostics.some(({ code }) => code === "undefined-global"),
+          ),
+      "LuaRocks diagnostics",
+    );
+  });
   it("installs the checksum-verified full distribution through the hub and runs its managed copy", async () => {
     const packagePath = (await lumine.packages.loadPackage("ide-client")).path;
     const ManagedServers = require(path.join(packagePath, "lib", "managed-servers"));
