@@ -2,10 +2,10 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { createProject, removeProject } = require("./helpers/project");
 
-describe("ide-lua adapter and installation", () => {
+describe("ide-luals adapter and installation", () => {
   let main, server, adapter, fixture, registration;
   beforeEach(async () => {
-    const pkg = await lumine.packages.activatePackage("ide-lua");
+    const pkg = await lumine.packages.activatePackage("ide-luals");
     main = pkg.mainModule;
     server = require("../lib/server");
     fixture = createProject();
@@ -19,8 +19,8 @@ describe("ide-lua adapter and installation", () => {
   });
   afterEach(async () => {
     for (const key of ["serverPath", "runtimeVersion", "libraryPaths", "globals"])
-      lumine.config.unset(`ide-lua.${key}`);
-    await lumine.packages.deactivatePackage("ide-lua");
+      lumine.config.unset(`ide-luals.${key}`);
+    await lumine.packages.deactivatePackage("ide-luals");
     await removeProject(fixture.rootPath);
   });
 
@@ -45,15 +45,15 @@ describe("ide-lua adapter and installation", () => {
       "*.rockspec": "lua",
     });
     expect(adapter.getWorkspaceConfiguration("Other")).toBeUndefined();
-    lumine.config.set("ide-lua.runtimeVersion", "LuaJIT");
-    lumine.config.set("ide-lua.globals", ["application"]);
-    lumine.config.set("ide-lua.libraryPaths", [fixture.rootPath]);
+    lumine.config.set("ide-luals.runtimeVersion", "LuaJIT");
+    lumine.config.set("ide-luals.globals", ["application"]);
+    lumine.config.set("ide-luals.libraryPaths", [fixture.rootPath]);
     expect(adapter.getSettings().Lua.runtime).toEqual({ version: "LuaJIT" });
     expect(adapter.getSettings().Lua.diagnostics.globals).toEqual(["application"]);
     expect(adapter.getSettings().Lua.workspace.library).toEqual([fixture.rootPath]);
   });
   it("keeps logs and generated metadata outside a user-selected distribution", async () => {
-    lumine.config.set("ide-lua.serverPath", process.execPath);
+    lumine.config.set("ide-luals.serverPath", process.execPath);
     const launch = await adapter.resolveServer({
       rootPath: fixture.rootPath,
       configDirPath: path.join(fixture.rootPath, "config"),
@@ -96,7 +96,7 @@ describe("ide-lua adapter and installation", () => {
     expect(await adapter.resolveServer({ rootPath: fixture.rootPath })).toBeNull();
     expect(missing.calls.count()).toBe(1);
     const [id, details] = missing.calls.mostRecent().args;
-    expect(id).toBe("ide-lua");
+    expect(id).toBe("ide-luals");
     expect(details.description).toContain("complete distribution");
   });
   it("selects only real release targets and refuses invalid version paths", () => {
@@ -152,7 +152,7 @@ describe("ide-lua adapter and installation", () => {
   });
   it("publishes one manifest-named background tip", () => {
     const tips = main.provideBackgroundTips();
-    expect(tips.packageName).toBe("ide-lua");
+    expect(tips.packageName).toBe("ide-luals");
     expect(tips.tips.length).toBe(1);
     expect(tips.tips[0]).toContain(".luarc.json");
   });

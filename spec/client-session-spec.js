@@ -15,7 +15,7 @@ const until = async (check, label) => {
   throw new Error(`${label} timed out`);
 };
 
-liveSuite("ide-lua actual editor routing", () => {
+liveSuite("ide-luals actual editor routing", () => {
   let fixture, editors, service, paths, published, subscription, timeout;
   beforeAll(() => {
     timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -30,8 +30,8 @@ liveSuite("ide-lua actual editor routing", () => {
     editors = {};
     paths = lumine.project.getPaths();
     published = [];
-    lumine.config.set("ide-lua.serverPath", serverPath);
-    for (const name of ["language-lua", "ide-client", "ide-lua"])
+    lumine.config.set("ide-luals.serverPath", serverPath);
+    for (const name of ["language-lua", "ide-client", "ide-luals"])
       await lumine.packages.activatePackage(name);
     service = lumine.packages.getActivePackage("ide-client").mainModule.provideIdeClient();
     subscription = service.onDidPublishDiagnostics((value) => published.push(value));
@@ -47,11 +47,11 @@ liveSuite("ide-lua actual editor routing", () => {
     for (const editor of lumine.workspace.getTextEditors())
       if (editor.getPath()?.toLowerCase().startsWith(fixture.rootPath.toLowerCase()))
         editor.destroy();
-    for (const name of ["ide-lua", "ide-client", "language-lua"])
+    for (const name of ["ide-luals", "ide-client", "language-lua"])
       await lumine.packages.deactivatePackage(name);
-    lumine.config.unset("ide-lua.serverPath");
+    lumine.config.unset("ide-luals.serverPath");
     for (const name of Object.keys(require("../package.json").configSchema.features.properties))
-      lumine.config.unset(`ide-lua.features.${name}`);
+      lumine.config.unset(`ide-luals.features.${name}`);
     lumine.project.setPaths(paths);
     await lumine.fileWatchClient.settlePendingTeardown();
     await removeProject(fixture.rootPath);
@@ -64,7 +64,7 @@ liveSuite("ide-lua actual editor routing", () => {
   const ready = () =>
     until(async () => {
       const session = (await service.activeSessionsForEditor(editors.main)).find(
-        ({ adapter, state }) => adapter.id === "ide-lua" && state === "running",
+        ({ adapter, state }) => adapter.id === "ide-luals" && state === "running",
       );
       if (!session) return false;
       return (
@@ -247,25 +247,25 @@ liveSuite("ide-lua actual editor routing", () => {
       codeLens: "textDocument/codeLens",
     };
     for (const [feature, method] of Object.entries(methods)) {
-      lumine.config.set(`ide-lua.features.${feature}`, false);
+      lumine.config.set(`ide-luals.features.${feature}`, false);
       expect(session.supports(method, editors.main, feature))
         .withContext(feature)
         .toBe(false);
-      lumine.config.unset(`ide-lua.features.${feature}`);
+      lumine.config.unset(`ide-luals.features.${feature}`);
     }
     expect(session.supports("textDocument/prepareCallHierarchy", editors.main)).toBe(false);
     expect(session.supports("textDocument/prepareTypeHierarchy", editors.main)).toBe(false);
-    lumine.config.set("ide-lua.features.format", false);
+    lumine.config.set("ide-luals.features.format", false);
     expect(await main().provideCodeFormatFile().formatEntireFile(editors.format)).toEqual([]);
-    lumine.config.set("ide-lua.features.hover", false);
+    lumine.config.set("ide-luals.features.hover", false);
     expect(await main().provideHover().hover(editors.main, point("main", "greet("))).toBeNull();
   });
   it("stops its server and reconnects existing editors after a package unload and reload", async () => {
     const old = await ready();
-    await lumine.packages.deactivatePackage("ide-lua");
+    await lumine.packages.deactivatePackage("ide-luals");
     await until(() => old.processExited || old.process?.exitCode != null, "Lua process exit");
-    await lumine.packages.unloadPackage("ide-lua");
-    await lumine.packages.activatePackage("ide-lua");
+    await lumine.packages.unloadPackage("ide-luals");
+    await lumine.packages.activatePackage("ide-luals");
     const fresh = await ready();
     expect(fresh).not.toBe(old);
     expect(

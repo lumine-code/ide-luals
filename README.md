@@ -1,4 +1,4 @@
-# ide-lua
+# ide-luals
 
 Provide Lua language intelligence through LuaLS.
 
@@ -18,7 +18,7 @@ Registers the native Lua Language Server with ide-client for Lua files and LuaRo
 
 ## Installation
 
-To install `ide-lua` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-lua`.
+To install `ide-luals` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-luals`.
 
 Install `ide-client`, `language-lua` and the frontends you want, such as `autocomplete`, `linter`, `hover`, `hyperclick`, `refactor`, `find-references` and `code-format`. Select an existing `lua-language-server` executable in Server Path or install LuaLS through `ide-client:manage-servers`.
 

@@ -1,10 +1,10 @@
 {
-  "name": "ide-lua",
+  "name": "ide-luals",
   "author": "lumine-code",
   "description": "Provide Lua language intelligence through LuaLS.",
-  "repository": "https://github.com/lumine-code/ide-lua",
+  "repository": "https://github.com/lumine-code/ide-luals",
   "bugs": {
-    "url": "https://github.com/lumine-code/ide-lua/issues"
+    "url": "https://github.com/lumine-code/ide-luals/issues"
   },
   "keywords": [
     "luajit",

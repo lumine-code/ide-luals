@@ -4,7 +4,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 
 exports.createProject = () => {
-  const directory = fs.mkdtempSync(path.join(fs.realpathSync.native(os.tmpdir()), "ide-lua-"));
+  const directory = fs.mkdtempSync(path.join(fs.realpathSync.native(os.tmpdir()), "ide-luals-"));
   const rootPath = path.join(directory, "project");
   fs.mkdirSync(rootPath);
   const texts = {
@@ -69,7 +69,7 @@ exports.removeProject = async (rootPath) => {
   if (
     path.basename(project) !== "project" ||
     path.dirname(resolved) !== parent ||
-    !path.basename(resolved).startsWith("ide-lua-")
+    !path.basename(resolved).startsWith("ide-luals-")
   )
     throw new Error("Refusing to remove a non-fixture directory");
   await fs.promises.rm(resolved, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });

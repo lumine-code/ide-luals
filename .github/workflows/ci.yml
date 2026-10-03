@@ -46,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          path: ide-lua
+          path: ide-luals
       - uses: actions/checkout@v7
         with:
           repository: lumine-code/lumine
@@ -79,7 +79,7 @@ jobs:
       - name: Use HTTPS for public Git dependencies
         run: git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
       - name: Install adapter dependencies
-        working-directory: ide-lua
+        working-directory: ide-luals
         run: npm ci --ignore-scripts
       - name: Install client dependencies
         working-directory: ide-client
@@ -103,4 +103,4 @@ jobs:
       - name: Run Jasmine specs against the real editor and server
         working-directory: lumine
         timeout-minutes: 20
-        run: xvfb-run --auto-servernum npm start -- --dev --test ../ide-lua/spec
+        run: xvfb-run --auto-servernum npm start -- --dev --test ../ide-luals/spec

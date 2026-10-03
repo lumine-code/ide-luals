@@ -9,7 +9,7 @@ if (process.env.REQUIRE_LUALS && !serverPath)
   throw new Error("CI requires a real LuaLS executable");
 const liveSuite = serverPath ? describe : () => {};
 
-liveSuite("ide-lua real LuaLS protocol", () => {
+liveSuite("ide-luals real LuaLS protocol", () => {
   let fixture, client, adapter, timeout;
   beforeAll(() => {
     timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -21,8 +21,8 @@ liveSuite("ide-lua real LuaLS protocol", () => {
   beforeEach(async () => {
     jasmine.useRealClock();
     fixture = createProject();
-    lumine.config.set("ide-lua.serverPath", serverPath);
-    const main = (await lumine.packages.activatePackage("ide-lua")).mainModule;
+    lumine.config.set("ide-luals.serverPath", serverPath);
+    const main = (await lumine.packages.activatePackage("ide-luals")).mainModule;
     main.consumeIdeClient({
       registerAdapter(value) {
         adapter = value;
@@ -33,9 +33,9 @@ liveSuite("ide-lua real LuaLS protocol", () => {
   });
   afterEach(async () => {
     await client.stop();
-    lumine.config.unset("ide-lua.serverPath");
-    lumine.config.unset("ide-lua.runtimeVersion");
-    await lumine.packages.deactivatePackage("ide-lua");
+    lumine.config.unset("ide-luals.serverPath");
+    lumine.config.unset("ide-luals.runtimeVersion");
+    await lumine.packages.deactivatePackage("ide-luals");
     await removeProject(fixture.rootPath);
   });
   const start = async () => {
@@ -65,7 +65,7 @@ liveSuite("ide-lua real LuaLS protocol", () => {
       await exercise[check](client, fixture);
     });
   it("preserves the project's Lua version ahead of an editor fallback", async () => {
-    lumine.config.set("ide-lua.runtimeVersion", "Lua 5.1");
+    lumine.config.set("ide-luals.runtimeVersion", "Lua 5.1");
     await start();
     // LuaLS's custom command expects the same canonical URI it emits in its
     // own actions. Standard document requests accept native drive spellings.
@@ -141,7 +141,7 @@ liveSuite("ide-lua real LuaLS protocol", () => {
       const installed = managed.installFor(adapter);
       for (const file of ["main.lua", "LICENSE"])
         expect(fs.statSync(path.join(installed.directory, file)).isFile()).toBe(true);
-      lumine.config.set("ide-lua.serverPath", "");
+      lumine.config.set("ide-luals.serverPath", "");
       await client.start(installed);
       await exercise.openProject(client, fixture);
       await exercise.intelligence(client, fixture);
