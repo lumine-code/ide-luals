@@ -69,7 +69,7 @@ liveSuite("ide-luals actual editor routing", () => {
       if (!session) return false;
       return (
         JSON.stringify(
-          await main().provideHover().hover(editors.main, point("main", "greet(")),
+          await main().provideContextHelp().getHelp(editors.main, point("main", "greet(")),
         ).includes("Build a greeting") && session
       );
     }, "Lua editor module analysis");
@@ -89,7 +89,7 @@ liveSuite("ide-luals actual editor routing", () => {
       ),
     ).toBe(true);
     expect(
-      JSON.stringify(await m.provideHover().hover(editors.main, point("main", "greet("))),
+      JSON.stringify(await m.provideContextHelp().getHelp(editors.main, point("main", "greet("))),
     ).toContain("Build a greeting");
     expect(
       (await m.provideHoverSignature().getSignature(editors.main, point("main", 'greet("Ada"', 8)))
@@ -258,7 +258,9 @@ liveSuite("ide-luals actual editor routing", () => {
     lumine.config.set("ide-luals.features.format", false);
     expect(await main().provideCodeFormatFile().formatEntireFile(editors.format)).toEqual([]);
     lumine.config.set("ide-luals.features.hover", false);
-    expect(await main().provideHover().hover(editors.main, point("main", "greet("))).toBeNull();
+    expect(
+      await main().provideContextHelp().getHelp(editors.main, point("main", "greet(")),
+    ).toBeNull();
   });
   it("stops its server and reconnects existing editors after a package unload and reload", async () => {
     const old = await ready();
@@ -269,7 +271,9 @@ liveSuite("ide-luals actual editor routing", () => {
     const fresh = await ready();
     expect(fresh).not.toBe(old);
     expect(
-      JSON.stringify(await main().provideHover().hover(editors.main, point("main", "greet("))),
+      JSON.stringify(
+        await main().provideContextHelp().getHelp(editors.main, point("main", "greet(")),
+      ),
     ).toContain("Build a greeting");
   });
 });
