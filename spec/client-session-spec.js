@@ -256,7 +256,7 @@ liveSuite("ide-luals actual editor routing", () => {
     expect(session.supports("textDocument/prepareCallHierarchy", editors.main)).toBe(false);
     expect(session.supports("textDocument/prepareTypeHierarchy", editors.main)).toBe(false);
     lumine.config.set("ide-luals.features.format", false);
-    expect(await main().provideCodeFormatFile().formatEntireFile(editors.format)).toEqual([]);
+    expect(await main().provideCodeFormatFile().formatEntireFile(editors.format)).toBeNull();
     lumine.config.set("ide-luals.features.hover", false);
     expect(
       await main().provideContextHelp().getHelp(editors.main, point("main", "greet(")),
