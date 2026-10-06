@@ -125,14 +125,14 @@ liveSuite("ide-luals real LuaLS protocol", () => {
   it("installs the checksum-verified full distribution through the hub and runs its managed copy", async () => {
     const packagePath = (await lumine.packages.loadPackage("ide")).path;
     const ManagedServers = require(path.join(packagePath, "lib", "managed-servers"));
-    const managed = new ManagedServers(
-      {
-        adapters: new Map([[adapter.id, adapter]]),
-        allSessions: () => [],
-        reattachAll: async () => {},
-      },
-      { storageRoot: path.join(fixture.directory, "managed") },
-    );
+    const Manager = require(path.join(packagePath, "lib", "language-server-manager"));
+    const manager = new Manager();
+    spyOn(manager, "reattachAll").and.resolveTo();
+    const managed = new ManagedServers(manager, {
+      storageRoot: path.join(fixture.directory, "managed"),
+    });
+    manager.setManagedServers(managed);
+    manager.registerAdapter(adapter);
     try {
       const record = await managed.install(adapter.id, {
         version: process.env.LUALS_VERSION || "3.19.1",
@@ -148,7 +148,7 @@ liveSuite("ide-luals real LuaLS protocol", () => {
       await exercise.symbolsAndFormat(client, fixture);
     } finally {
       await client.stop();
-      managed.emitter.dispose();
+      await manager.deactivate();
     }
   });
 });
