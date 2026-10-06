@@ -4,7 +4,7 @@ const { LiveLspClient } = require("./helpers/live-lsp-client");
 const { createProject, removeProject } = require("./helpers/project");
 const exercise = require("./helpers/exercise-server");
 const serverPath =
-  process.env.LUALS_PATH || require("../lib/server").findOnPath("lua-language-server");
+  process.env.LUALS_PATH || require("./helpers/server-resolver").findOnPath("lua-language-server");
 if (process.env.REQUIRE_LUALS && !serverPath)
   throw new Error("CI requires a real LuaLS executable");
 const liveSuite = serverPath ? describe : () => {};

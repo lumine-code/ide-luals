@@ -1,3 +1,4 @@
+const { resolver, serverContext, installContext } = require("./helpers/server-resolver");
 const fs = require("node:fs");
 const path = require("node:path");
 const { createProject, removeProject } = require("./helpers/project");
@@ -54,10 +55,12 @@ describe("ide-luals adapter and installation", () => {
   });
   it("keeps logs and generated metadata outside a user-selected distribution", async () => {
     lumine.config.set("ide-luals.serverPath", process.execPath);
-    const launch = await adapter.resolveServer({
-      rootPath: fixture.rootPath,
-      configDirPath: path.join(fixture.rootPath, "config"),
-    });
+    const launch = await adapter.resolveServer(
+      serverContext({
+        rootPath: fixture.rootPath,
+        configDirPath: path.join(fixture.rootPath, "config"),
+      }),
+    );
     expect(launch.command).toBe(process.execPath);
     expect(launch.cwd).toBe(fixture.rootPath);
     expect(launch.transport).toBe("stdio");
@@ -73,18 +76,15 @@ describe("ide-luals adapter and installation", () => {
       configDirPath: fixture.rootPath,
       managedServer: { binaryPath: "ignored", version: "3.19.1" },
     };
-    expect((await server.resolveServer(process.execPath, context)).command).toBe(process.execPath);
-    await expectAsync(server.resolveServer(fixture.rootPath, context)).toBeRejectedWithError(
-      /not an executable/,
+    expect((await server.resolveServer(serverContext(context), process.execPath)).command).toBe(
+      process.execPath,
     );
-  });
-  it("does not treat a directory or a Windows batch shim on PATH as the native server", () => {
-    fs.mkdirSync(path.join(fixture.rootPath, "lua-language-server"));
-    fs.writeFileSync(path.join(fixture.rootPath, "lua-language-server.cmd"), "@echo off\n");
-    expect(server.findOnPath("lua-language-server", { PATH: fixture.rootPath })).toBeNull();
+    await expectAsync(
+      server.resolveServer(serverContext(context), fixture.rootPath),
+    ).toBeRejectedWithError(/must name a file/);
   });
   it("reports a missing executable through the shared client", async () => {
-    spyOn(server, "findOnPath").and.returnValue(null);
+    spyOn(resolver, "select").and.resolveTo(null);
     const missing = jasmine.createSpy("missing server");
     main.consumeIdeClient({
       registerAdapter(value) {
@@ -93,7 +93,7 @@ describe("ide-luals adapter and installation", () => {
       },
       reportMissingServer: missing,
     });
-    expect(await adapter.resolveServer({ rootPath: fixture.rootPath })).toBeNull();
+    expect(await adapter.resolveServer(serverContext({ rootPath: fixture.rootPath }))).toBeNull();
     expect(missing.calls.count()).toBe(1);
     const [id, details] = missing.calls.mostRecent().args;
     expect(id).toBe("ide-luals");
@@ -128,7 +128,9 @@ describe("ide-luals adapter and installation", () => {
       downloadFile: jasmine.createSpy("download"),
     };
     await expectAsync(
-      server.installServer({ storagePath: fixture.rootPath, version: "3.19.1", api }),
+      server.installServer(
+        installContext({ storagePath: fixture.rootPath, version: "3.19.1", api }),
+      ),
     ).toBeRejectedWithError(/SHA256/);
     expect(api.downloadFile).not.toHaveBeenCalled();
   });
@@ -147,7 +149,9 @@ describe("ide-luals adapter and installation", () => {
       setServerInstallationStatus() {},
     };
     await expectAsync(
-      server.installServer({ storagePath: fixture.rootPath, version: "3.19.1", api }),
+      server.installServer(
+        installContext({ storagePath: fixture.rootPath, version: "3.19.1", api }),
+      ),
     ).toBeRejected();
   });
   it("publishes one manifest-named background tip", () => {

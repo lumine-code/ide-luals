@@ -3,7 +3,7 @@ const { Point } = require("lumine");
 const { createProject, removeProject, position } = require("./helpers/project");
 const { sameUri } = require("./helpers/exercise-server");
 const serverPath =
-  process.env.LUALS_PATH || require("../lib/server").findOnPath("lua-language-server");
+  process.env.LUALS_PATH || require("./helpers/server-resolver").findOnPath("lua-language-server");
 const liveSuite = serverPath ? describe : () => {};
 const until = async (check, label) => {
   const deadline = Date.now() + 30000;
