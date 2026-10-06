@@ -40,11 +40,11 @@ describe("ide-luals adapter and installation", () => {
   });
   it("exposes native settings sections and preserves unset runtime defaults", () => {
     expect(adapter.getSettings().Lua.runtime).toBeUndefined();
-    expect(adapter.getWorkspaceConfiguration("Lua.hint")).toEqual({ enable: true });
-    expect(adapter.getWorkspaceConfiguration("files.associations")).toEqual({
+    expect(adapter.getSettings().Lua.hint).toEqual({ enable: true });
+    expect(adapter.getSettings().files.associations).toEqual({
       "*.rockspec": "lua",
     });
-    expect(adapter.getWorkspaceConfiguration("Other")).toBeUndefined();
+    expect(adapter.getWorkspaceConfiguration).toBeUndefined();
     lumine.config.set("ide-luals.runtimeVersion", "LuaJIT");
     lumine.config.set("ide-luals.globals", ["application"]);
     lumine.config.set("ide-luals.libraryPaths", [fixture.rootPath]);
