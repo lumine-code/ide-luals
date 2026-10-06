@@ -104,25 +104,25 @@ liveSuite("ide-luals actual editor routing", () => {
           ({ path }) => path.toLowerCase() === fixture.files[name].toLowerCase(),
         ),
       ).toBe(true);
-    const definitions = await m.provideSymbol().getSymbols({
-      type: "declaration",
-      editor: editors.main,
+    const definitions = await m.provideDefinitionProvider().getDefinitions(editors.main, {
       range: { start: point("main", "greet(") },
     });
     expect(
       definitions.some(({ path }) => path.toLowerCase() === fixture.files.greeter.toLowerCase()),
     ).toBe(true);
+    const documentProvider = m.provideDocumentSymbolProvider();
+    const source = documentProvider
+      .getDocumentSymbolSources(editors.greeter)
+      .find(({ id }) => id === "ide-client:ide-luals");
+    expect(source.state).toBe("ready");
+    const symbols = await documentProvider.getDocumentSymbols(editors.greeter, {
+      sourceId: source.id,
+    });
+    expect(symbols.some(({ name }) => name === "M.greet")).toBe(true);
     expect(
-      (await m.provideSymbol().getSymbols({ type: "file", editor: editors.greeter })).some(
-        ({ name }) => name === "M.greet",
+      (await m.provideWorkspaceSymbolProvider().searchWorkspaceSymbols("greet")).some(
+        ({ name }) => name === "greet",
       ),
-    ).toBe(true);
-    expect(
-      (
-        await m
-          .provideSymbol()
-          .getSymbols({ type: "project", editor: editors.main, query: "greet" })
-      ).some(({ name }) => name === "greet"),
     ).toBe(true);
   });
   it("keeps UTF-16 rename edits correct and applies them to both an open buffer and closed module", async () => {
