@@ -2,7 +2,7 @@
 
 Provide Lua language intelligence through LuaLS.
 
-Registers the native Lua Language Server with ide-client for Lua files and LuaRocks specifications. The official distribution includes its own runtime and formatter, so no separate Lua installation is needed.
+Registers the native Lua Language Server with ide for Lua files and LuaRocks specifications. The official distribution includes its own runtime and formatter, so no separate Lua installation is needed.
 
 ## Features
 
@@ -20,7 +20,7 @@ Registers the native Lua Language Server with ide-client for Lua files and LuaRo
 
 To install `ide-luals` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-luals`.
 
-Install `ide-client`, `language-lua` and the frontends you want, such as `autocomplete`, `linter`, `hover`, `hyperclick`, `refactor`, `find-references` and `code-format`. Select an existing `lua-language-server` executable in Server Path or install LuaLS through `ide-client:manage-servers`.
+Install `ide`, `language-lua` and the frontends you want, such as `autocomplete`, `linter`, `hover`, `hyperclick`, `refactor`, `find-references` and `code-format`. Select an existing `lua-language-server` executable in Server Path or install LuaLS through `ide:manage-servers`.
 
 Official managed releases support x64 Windows, Linux and macOS, arm64 Linux and macOS, and 32-bit Windows. Preserve the complete distribution when selecting an existing executable: its scripts, metadata templates and native formatter are required beside the executable.
 
@@ -49,7 +49,7 @@ Keys in `.luarc.json` omit the `Lua.` prefix. See the [upstream configuration re
 
 ## Services
 
-- `ide-client`: consumed to register LuaLS and route its language features.
+- `ide`: consumed to register LuaLS and route its language features.
 - `background-tips.provider`: provided to explain project configuration and annotations.
 
 ## Contributing

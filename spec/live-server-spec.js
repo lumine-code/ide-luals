@@ -23,7 +23,7 @@ liveSuite("ide-luals real LuaLS protocol", () => {
     fixture = createProject();
     lumine.config.set("ide-luals.serverPath", serverPath);
     const main = (await lumine.packages.activatePackage("ide-luals")).mainModule;
-    main.consumeIdeClient({
+    main.consumeIde({
       registerAdapter(value) {
         adapter = value;
         client = new LiveLspClient(value, fixture.rootPath);
@@ -123,7 +123,7 @@ liveSuite("ide-luals real LuaLS protocol", () => {
     );
   });
   it("installs the checksum-verified full distribution through the hub and runs its managed copy", async () => {
-    const packagePath = (await lumine.packages.loadPackage("ide-client")).path;
+    const packagePath = (await lumine.packages.loadPackage("ide")).path;
     const ManagedServers = require(path.join(packagePath, "lib", "managed-servers"));
     const managed = new ManagedServers(
       {

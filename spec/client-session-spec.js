@@ -31,9 +31,9 @@ liveSuite("ide-luals actual editor routing", () => {
     paths = lumine.project.getPaths();
     published = [];
     lumine.config.set("ide-luals.serverPath", serverPath);
-    for (const name of ["language-lua", "ide-client", "ide-luals"])
+    for (const name of ["language-lua", "ide", "ide-luals"])
       await lumine.packages.activatePackage(name);
-    service = lumine.packages.getActivePackage("ide-client").mainModule.provideIdeClient();
+    service = lumine.packages.getActivePackage("ide").mainModule.provideIde();
     subscription = service.onDidPublishDiagnostics((value) => published.push(value));
     lumine.project.setPaths([fixture.rootPath]);
     for (const name of Object.keys(fixture.texts)) {
@@ -47,7 +47,7 @@ liveSuite("ide-luals actual editor routing", () => {
     for (const editor of lumine.workspace.getTextEditors())
       if (editor.getPath()?.toLowerCase().startsWith(fixture.rootPath.toLowerCase()))
         editor.destroy();
-    for (const name of ["ide-luals", "ide-client", "language-lua"])
+    for (const name of ["ide-luals", "ide", "language-lua"])
       await lumine.packages.deactivatePackage(name);
     lumine.config.unset("ide-luals.serverPath");
     for (const name of Object.keys(require("../package.json").configSchema.features.properties))
@@ -56,7 +56,7 @@ liveSuite("ide-luals actual editor routing", () => {
     await lumine.fileWatchClient.settlePendingTeardown();
     await removeProject(fixture.rootPath);
   });
-  const main = () => lumine.packages.getActivePackage("ide-client").mainModule;
+  const main = () => lumine.packages.getActivePackage("ide").mainModule;
   const point = (name, fragment, inside = 2) => {
     const value = position(fixture.texts[name], fragment, inside);
     return new Point(value.line, value.character);
@@ -113,7 +113,7 @@ liveSuite("ide-luals actual editor routing", () => {
     const documentProvider = m.provideDocumentSymbolProvider();
     const source = documentProvider
       .getDocumentSymbolSources(editors.greeter)
-      .find(({ id }) => id === "ide-client:ide-luals");
+      .find(({ id }) => id === "ide:ide-luals");
     expect(source.state).toBe("ready");
     const symbols = await documentProvider.getDocumentSymbols(editors.greeter, {
       sourceId: source.id,

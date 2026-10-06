@@ -11,7 +11,7 @@ describe("ide-luals adapter and installation", () => {
     server = require("../lib/server");
     fixture = createProject();
     registration = { dispose: jasmine.createSpy("dispose provider edge") };
-    main.consumeIdeClient({
+    main.consumeIde({
       registerAdapter(value) {
         adapter = value;
         return registration;
@@ -27,7 +27,7 @@ describe("ide-luals adapter and installation", () => {
 
   it("returns the provider edge and identifies the Lua grammar and managed tool", () => {
     expect(
-      main.consumeIdeClient({
+      main.consumeIde({
         registerAdapter() {
           return registration;
         },
@@ -86,7 +86,7 @@ describe("ide-luals adapter and installation", () => {
   it("reports a missing executable through the shared client", async () => {
     spyOn(resolver, "select").and.resolveTo(null);
     const missing = jasmine.createSpy("missing server");
-    main.consumeIdeClient({
+    main.consumeIde({
       registerAdapter(value) {
         adapter = value;
         return registration;
