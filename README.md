@@ -16,6 +16,8 @@ Registers the native Lua Language Server with ide for Lua files and LuaRocks spe
 - **Project configuration**: reads .luarc.json and annotated application libraries.
 - **Managed installation**: downloads complete official releases and verifies their SHA-256 digests.
 
+![Lua diagnostics compare an assigned string with a numeric type annotation.](.github/demo.png)
+
 ## Installation
 
 To install `ide-luals` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-luals`.

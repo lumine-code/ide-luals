@@ -1,0 +1,16 @@
+{
+  "title": "ide-luals",
+  "description": "Lua diagnostics compare an assigned string with a numeric type annotation.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "81ebec2a7044aca28b128a8865e1852cbf6b1552",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Lua diagnostics compare an assigned string with a numeric type annotation.",
+      "width": 1100,
+      "height": 490
+    }
+  ]
+}
