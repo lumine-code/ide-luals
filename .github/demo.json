@@ -1,16 +1,96 @@
 {
   "title": "ide-luals",
   "description": "Lua diagnostics compare an assigned string with a numeric type annotation.",
-  "recordedOn": "2026-10-13",
-  "sourceRevision": "81ebec2a7044aca28b128a8865e1852cbf6b1552",
+  "recordedOn": "2026-10-14",
+  "sourceRevision": "65eb470b0351a77b04e19527f8ea91ebb8312eaf",
+  "themeSourceRevision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
   "mode": "normal",
   "fontSettings": "default",
+  "scenario": "demo.js",
+  "recipeHash": "7b54b2710678fe951ed8db541a866ac3a2325e30110cb0a21d5db9aee4c572fa",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "electron": "44.7.0",
+    "chrome": "152.0.7977.130",
+    "devicePixelRatio": 1,
+    "locale": "en-GB",
+    "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
+    "fontSize": 14,
+    "themes": ["one-day-syntax", "one-day-ui"]
+  },
+  "viewport": { "width": 1100, "height": 490 },
+  "cornerRadius": 10,
+  "sources": {
+    "editor": {
+      "revision": "8be8f86075ad93df038610d82b3ac6d99329957d",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "package": {
+      "revision": "65eb470b0351a77b04e19527f8ea91ebb8312eaf",
+      "dirty": true,
+      "workingTreeHash": "5a5255f4f1c6ad92f5f122795e3f10848cfc8f6586d0e58cc05e1059028906bd"
+    },
+    "ide-luals": {
+      "revision": "65eb470b0351a77b04e19527f8ea91ebb8312eaf",
+      "dirty": true,
+      "workingTreeHash": "5a5255f4f1c6ad92f5f122795e3f10848cfc8f6586d0e58cc05e1059028906bd"
+    },
+    "documentation-view": {
+      "revision": "5d0a00d98bf0b1f7a5444f548a4683a07062ada0",
+      "dirty": true,
+      "workingTreeHash": "012fbb9e6b8dc1f192ee363c7fbf3170548e39169ca52d87f81061f968e31fd3"
+    },
+    "hover": {
+      "revision": "6a05977f1748bd17f7559631f423f34c257d162b",
+      "dirty": true,
+      "workingTreeHash": "09e99cf5a334b94b212db69efe6c22849d4058416233745e88706c0b0e8ec02d"
+    },
+    "ide": {
+      "revision": "9c74eaee81caf600e73c5c50e1fbf9d9f894d560",
+      "dirty": true,
+      "workingTreeHash": "d648bd45282065de577eef821a325ad0cd0c4b2ee57852485d537e5d21d192f1"
+    },
+    "language-lua": {
+      "revision": "2b7f6f2c3802e611450e0ca484571cf3a6bbf0ef",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "linter": {
+      "revision": "0965aceb6980bd6c2b706b30874b11bdb6331a5e",
+      "dirty": true,
+      "workingTreeHash": "abd277412c84d07180787e870b71ce2b6b63f9766063ae81a029f7723467f3c3"
+    },
+    "linter-panel": {
+      "revision": "e8fe8ad0f2906a1bc430cd70793d1f82c467682c",
+      "dirty": true,
+      "workingTreeHash": "8f9214c58bdb765df2338b72708ad922514614c418882d9f95107249a87f2eda"
+    },
+    "marker": {
+      "revision": "090aa886a5318fb8a3251cee47c452cf068e08c2",
+      "dirty": true,
+      "workingTreeHash": "d48a91a2025e76cd6da2916c45bbfef07d82dd550cc7f111378e824f86eb144f"
+    },
+    "one-theme": {
+      "revision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
+      "dirty": true,
+      "workingTreeHash": "50ec2f83a6347dd8113870992ec4eb2be4014f3d9e12213c2f51b543f1eca793"
+    }
+  },
+  "fixtures": [
+    {
+      "file": "ide-luals/signal.lua",
+      "sha256": "f27b75429d4e7d6f47933aedd4928282b12533cef6e9dec8901c40c3a49e263f"
+    }
+  ],
   "images": [
     {
       "file": "demo.png",
       "label": "Lua diagnostics compare an assigned string with a numeric type annotation.",
       "width": 1100,
-      "height": 490
+      "height": 490,
+      "sha256": "b642873f83ff504ecf00f495aaa725050c22b275967aa6817eb31ed8d5a82421"
     }
   ]
 }
