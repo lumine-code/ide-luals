@@ -41,7 +41,7 @@ liveSuite("ide-luals real LuaLS protocol", () => {
   });
   const start = async () => {
     const result = await client.start();
-    expect(result.serverInfo.version).toBe(process.env.LUALS_VERSION || "3.19.1");
+    expect(result.serverInfo.version).toBe(process.env.LUALS_VERSION || "3.19.2");
     await exercise.openProject(client, fixture);
   };
   for (const [description, check] of [
@@ -137,9 +137,9 @@ liveSuite("ide-luals real LuaLS protocol", () => {
     manager.registerAdapter(adapter);
     try {
       const record = await managed.install(adapter.id, {
-        version: process.env.LUALS_VERSION || "3.19.1",
+        version: process.env.LUALS_VERSION || "3.19.2",
       });
-      expect(record.version).toBe(process.env.LUALS_VERSION || "3.19.1");
+      expect(record.version).toBe(process.env.LUALS_VERSION || "3.19.2");
       const installed = managed.installFor(adapter);
       for (const file of ["main.lua", "LICENSE"])
         expect(fs.statSync(path.join(installed.directory, file)).isFile()).toBe(true);

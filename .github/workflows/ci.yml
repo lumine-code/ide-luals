@@ -43,7 +43,7 @@ jobs:
     env:
       LUMINE_JASMINE_REPORTER: list
       LUMINE_TEST_PACKAGES: ide language-lua
-      LUALS_VERSION: 3.19.1
+      LUALS_VERSION: 3.19.2
       REQUIRE_LUALS: 1
     steps:
       - uses: actions/checkout@v7
@@ -69,7 +69,7 @@ jobs:
       - name: Install the exact checksum-verified official LuaLS release
         run: |
           mkdir "$GITHUB_WORKSPACE/luals"
-          curl --fail --location --retry 3 --output luals.tar.gz https://github.com/LuaLS/lua-language-server/releases/download/3.19.1/lua-language-server-3.19.1-linux-x64.tar.gz
+          curl --fail --location --retry 3 --output luals.tar.gz https://github.com/LuaLS/lua-language-server/releases/download/3.19.2/lua-language-server-3.19.2-linux-x64.tar.gz
           echo "e9235d2d72ef55bc41cf8c99cda2ed64777682024b4bb81f5dea425060c5cbb8  luals.tar.gz" | sha256sum --check
           tar -xzf luals.tar.gz -C "$GITHUB_WORKSPACE/luals"
           chmod +x "$GITHUB_WORKSPACE/luals/bin/lua-language-server"
