@@ -132,6 +132,7 @@ liveSuite("ide-luals real LuaLS protocol", () => {
     const managed = new ManagedServers(manager, {
       storageRoot: path.join(fixture.directory, "managed"),
       fetchUrl: createGithubFetch({ token: process.env.LUMINE_TEST_GITHUB_TOKEN }),
+      githubToken: process.env.LUMINE_TEST_GITHUB_TOKEN,
     });
     manager.setManagedServers(managed);
     manager.registerAdapter(adapter);
