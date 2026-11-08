@@ -93,6 +93,8 @@ jobs:
           install || install || install
       - name: Prepare Electron
         working-directory: lumine
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           node script/install-electron.js
           npm run build
